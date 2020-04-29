@@ -1,4 +1,5 @@
 class Patient < ApplicationRecord
+  attr_accessor :auth_token
   belongs_to :phone, inverse_of: :patients
   delegate :number, to: :phone, prefix: true
   delegate :is_verified, to: :phone, prefix: true
@@ -6,7 +7,7 @@ class Patient < ApplicationRecord
   reverse_geocoded_by :latitude, :longitude
   has_paper_trail
 
-  scope :with_valid_phones, -> { eager_load(:phone).merge(Phone.validated) }
+  scope :with_valid_phone, -> { eager_load(:phone).merge(Phone.validated) }
 
   include AASM
   aasm do
